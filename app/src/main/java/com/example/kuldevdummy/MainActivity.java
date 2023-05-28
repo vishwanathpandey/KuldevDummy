@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.kuldevdummy.adapters.ExpandableGridView;
 import com.example.kuldevdummy.adapters.GridAdapter;
 import com.example.kuldevdummy.adapters.RecyclerViewAdapter;
 import com.example.kuldevdummy.databinding.ActivityMainBinding;
@@ -79,18 +80,20 @@ public class MainActivity extends AppCompatActivity {
 
                     View gridLayout = LayoutInflater.from(this).inflate(R.layout.grid_layout, binding.parentLayout, false);
 
-                    GridView gridView = gridLayout.findViewById(R.id.grid_view);
+                    ExpandableGridView gridView = gridLayout.findViewById(R.id.grid_view);
 
 
                     int columns = component.getColumns();
                     gridView.setNumColumns(columns);
+                    gridView.setExpanded(true);
+
+
                     List<Data> gridItems = component.getData();
 
                     Log.d(TAG,"number of column is - "+columns +" number of data is - "+gridItems.size());
 
                     GridAdapter adapter = new GridAdapter(this, gridItems);
                     gridView.setAdapter(adapter);
-
 
 
                     binding.parentLayout.addView(gridLayout);
