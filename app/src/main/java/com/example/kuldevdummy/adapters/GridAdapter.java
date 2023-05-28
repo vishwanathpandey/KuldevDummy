@@ -48,7 +48,7 @@ public class GridAdapter extends BaseAdapter {
 
         Data item = items.get(position);
 
-        // Set data to the views
+
 
         textView.setText(item.getValue());
 

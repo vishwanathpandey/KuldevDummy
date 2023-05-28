@@ -32,7 +32,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Data item = items.get(position);
 
-        // Set data to the views
+
 
         holder.textView_name.setText(item.getName());
         holder.textview_value.setText(item.getValue());

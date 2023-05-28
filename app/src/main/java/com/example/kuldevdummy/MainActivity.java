@@ -44,45 +44,44 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        // Read the JSON file
+
         InputStream inputStream = getResources().openRawResource(R.raw.component);
         Reader reader = new InputStreamReader(inputStream);
 
-        // Parse JSON using Gson
+
         Gson gson = new Gson();
         BaseModel dataModel = gson.fromJson(reader, BaseModel.class);
 
-        // Iterate over the parsed components
+
         for (Component component : dataModel.getComponents()) {
             switch (component.getType()) {
                 case "image":
-                    // Inflate image layout dynamically
+
                     View imageLayout = LayoutInflater.from(this).inflate(R.layout.image_layout, binding.parentLayout, false);
                     ImageView imageView = imageLayout.findViewById(R.id.image_view);
 
-                    // Populate image data
+
                     String imageUrl = component.getImageUrl();
 
                     Log.d(TAG,"image url is - "+imageUrl);
-                    String name = component.getName();
-                    String description = component.getDescription();
-                    // Set image URL, name, description, etc. to the ImageView and other views
+
+
 
                     Glide.with(this)
                             .load(imageUrl)
                             .into(imageView);
 
-                    // Add image layout to the parent layout
+
                    binding.parentLayout.addView(imageLayout);
                     break;
 
                 case "grid":
-                    // Inflate grid layout dynamically
+
                     View gridLayout = LayoutInflater.from(this).inflate(R.layout.grid_layout, binding.parentLayout, false);
-                    // Perform necessary operations to set up the grid view based on the JSON data
+
                     GridView gridView = gridLayout.findViewById(R.id.grid_view);
 
-                    // Populate grid data
+
                     int columns = component.getColumns();
                     gridView.setNumColumns(columns);
                     List<Data> gridItems = component.getData();
@@ -93,22 +92,22 @@ public class MainActivity extends AppCompatActivity {
                     gridView.setAdapter(adapter);
 
 
-                    // Add grid layout to the parent layout
+
                     binding.parentLayout.addView(gridLayout);
                     break;
 
                 case "recycler":
-                    // Inflate recycler layout dynamically
+
                     View recyclerLayout = LayoutInflater.from(this).inflate(R.layout.recycler_layout, binding.parentLayout, false);
 
                     RecyclerView recyclerView = recyclerLayout.findViewById(R.id.recycler_view);
 
-                    // Perform necessary operations to set up the recycler view based on the JSON data
-                    RecyclerViewAdapter recyclerViewAdapteradapter = new RecyclerViewAdapter(component.getData());
-                    recyclerView.setAdapter(recyclerViewAdapteradapter);
+
+                    RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(component.getData());
+                    recyclerView.setAdapter(recyclerViewAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-                    // Add recycler layout to the parent layout
+
                     binding.parentLayout.addView(recyclerLayout);
                     break;
             }
