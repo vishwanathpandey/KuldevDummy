@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.kuldevdummy.R;
 import com.example.kuldevdummy.models.Data;
 
@@ -45,10 +47,13 @@ public class GridAdapter extends BaseAdapter {
 
 
         TextView textView = convertView.findViewById(R.id.textView_name);
+        ImageView gridImageView = convertView.findViewById(R.id.grid_image_view);
 
         Data item = items.get(position);
 
-
+        Glide.with(convertView.getContext())
+                .load(item.getImageUrl())
+                .into(gridImageView);
 
         textView.setText(item.getValue());
 

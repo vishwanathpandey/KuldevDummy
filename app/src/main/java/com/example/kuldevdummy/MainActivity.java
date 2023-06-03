@@ -1,6 +1,7 @@
 package com.example.kuldevdummy;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,67 +55,14 @@ public class MainActivity extends AppCompatActivity {
         BaseModel dataModel = gson.fromJson(reader, BaseModel.class);
 
 
-        for (Component component : dataModel.getComponents()) {
-            switch (component.getType()) {
-                case "image":
-
-                    View imageLayout = LayoutInflater.from(this).inflate(R.layout.image_layout, binding.parentLayout, false);
-                    ImageView imageView = imageLayout.findViewById(R.id.image_view);
+        RecyclerView recyclerView = binding.parentRecyclerView;
 
 
-                    String imageUrl = component.getImageUrl();
-
-                    Log.d(TAG,"image url is - "+imageUrl);
-
-
-
-                    Glide.with(this)
-                            .load(imageUrl)
-                            .into(imageView);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(dataModel.getComponents());
+        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-                   binding.parentLayout.addView(imageLayout);
-                    break;
-
-                case "grid":
-
-                    View gridLayout = LayoutInflater.from(this).inflate(R.layout.grid_layout, binding.parentLayout, false);
-
-                    ExpandableGridView gridView = gridLayout.findViewById(R.id.grid_view);
-
-
-                    int columns = component.getColumns();
-                    gridView.setNumColumns(columns);
-                    gridView.setExpanded(true);
-
-
-                    List<Data> gridItems = component.getData();
-
-                    Log.d(TAG,"number of column is - "+columns +" number of data is - "+gridItems.size());
-
-                    GridAdapter adapter = new GridAdapter(this, gridItems);
-                    gridView.setAdapter(adapter);
-
-
-                    binding.parentLayout.addView(gridLayout);
-                    break;
-
-                case "recycler":
-
-                    View recyclerLayout = LayoutInflater.from(this).inflate(R.layout.recycler_layout, binding.parentLayout, false);
-
-                    RecyclerView recyclerView = recyclerLayout.findViewById(R.id.recycler_view);
-
-
-                    RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(component.getData());
-                    recyclerView.setAdapter(recyclerViewAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-                    binding.parentLayout.addView(recyclerLayout);
-                    break;
-            }
-        }
 
 
 
