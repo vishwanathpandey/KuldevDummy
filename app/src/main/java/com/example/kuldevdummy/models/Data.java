@@ -10,6 +10,8 @@ public class Data {
         private String name;
         private String description;
 
+    private String imageUrl;
+
 
         public String getValue() {
             return value;
@@ -34,6 +36,14 @@ public class Data {
         public void setDescription(String description) {
             this.description = description;
         }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
 
 

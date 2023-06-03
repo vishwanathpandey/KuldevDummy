@@ -9,34 +9,74 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kuldevdummy.R;
+import com.example.kuldevdummy.holder.GridViewHolder;
+import com.example.kuldevdummy.holder.ImageViewHolder;
+import com.example.kuldevdummy.holder.RecyclerViewHolder;
+import com.example.kuldevdummy.models.Component;
 import com.example.kuldevdummy.models.Data;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    private List<Data> items;
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public RecyclerViewAdapter(List<Data> items) {
+    private static final int VIEW_TYPE_IMAGE = 1;
+    private static final int VIEW_TYPE_GRID = 2;
+    private static final int VIEW_TYPE_RECYCLER = 3;
+    private List<Component> items;
+
+    public RecyclerViewAdapter(List<Component> items) {
         this.items = items;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recyclerview_item_layout, parent, false);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view;
+        switch (viewType) {
+            case VIEW_TYPE_IMAGE:
+                view = inflater.inflate(R.layout.image_layout, parent, false);
+                return new ImageViewHolder(view);
+            case VIEW_TYPE_GRID:
+                view = inflater.inflate(R.layout.grid_layout, parent, false);
+                return new GridViewHolder(view);
+            case VIEW_TYPE_RECYCLER:
+                view = inflater.inflate(R.layout.recycler_layout, parent, false);
+                return new RecyclerViewHolder(view);
+            default:
+                throw new IllegalArgumentException("Invalid view type");
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Data item = items.get(position);
+    public int getItemViewType(int position) {
+        Component item = items.get(position);
+        if (item.getType().equals( "image")) {
+            return VIEW_TYPE_IMAGE;
+        } else if (item.getType().equals( "grid")) {
+            return VIEW_TYPE_GRID;
+        } else if (item.getType().equals( "recycler")) {
+            return VIEW_TYPE_RECYCLER;
+        }
+        return super.getItemViewType(position);
+    }
 
-
-
-        holder.textView_name.setText(item.getName());
-        holder.textview_value.setText(item.getValue());
-        holder.textview_desc.setText(item.getDescription());
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Component item = items.get(position);
+        switch (holder.getItemViewType()) {
+            case VIEW_TYPE_IMAGE:
+                ((ImageViewHolder) holder).bindData((Component) item);
+                break;
+            case VIEW_TYPE_GRID:
+                ((GridViewHolder) holder).bindData((Component) item);
+                break;
+            case VIEW_TYPE_RECYCLER:
+                ((RecyclerViewHolder) holder).bindData((List<Data>) item.getData());
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid view type");
+        }
     }
 
     @Override
@@ -44,16 +84,5 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return items.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textView_name,textview_value,textview_desc;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            textView_name = itemView.findViewById(R.id.textView_name);
-            textview_value = itemView.findViewById(R.id.textView_value);
-            textview_desc = itemView.findViewById(R.id.textView_desc);
-        }
-    }
 }
